@@ -1,7 +1,7 @@
 #include "WiFi.h"
 // #include <ESP8266WiFi.h>
 #include <WebSocketsServer.h>
-#include "config.h"
+#include "config.h" // ssidとpassword
 
 const int sensorPin = 4;
 char elapsedTimeStr[10]; // データ送信用の固定バッファ
@@ -54,9 +54,6 @@ void initNetWork(){
   if (!WiFi.config(local_IP, gateway, subnet)) {
     Serial.println("Failed to configure static IP");
   }
-
-  // const char* ssid = "<ssid>";
-  // const char* password = "<password>";
 
   WiFi.begin(CONF_SSID, CONF_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
