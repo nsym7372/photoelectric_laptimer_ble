@@ -12,6 +12,7 @@ unsigned long elapsedTime;
 
 const unsigned long ignoreInterval = 3000; // センサー再検知を無視する時間（ミリ秒）
 unsigned long lastDetectionTime = 0;
+static int previousSensorState = HIGH;
 
 void setup() {
   Serial.begin(115200);
@@ -27,7 +28,6 @@ void setup() {
 void loop() {
   webSocket.loop();
   int sensorState = digitalRead(sensorPin);
-  static int previousSensorState = HIGH;
   if (sensorState == LOW && previousSensorState == HIGH) {
 
     // センサー検知から一定時間が経過している場合のみ処理を実行
