@@ -1,1 +1,1 @@
-# photoelectric_timer_web_socket
+# photoelectric_laptimer_ble
