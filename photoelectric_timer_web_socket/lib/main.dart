@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:photoelectric_timer/model/speak_service.dart';
 import 'package:photoelectric_timer/model/websocket_service.dart';
 import 'package:photoelectric_timer/view/laptimer_view.dart';
 import 'package:photoelectric_timer/viewmodel/laptimer_viewmodel.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final speakService = await SpeakService.create();
   final webSocketService = WebSocketService("ws://192.168.179.9:81");
-  final viewModel = LapTimerViewModel(webSocketService);
+  final viewModel = LapTimerViewModel(webSocketService, speakService);
 
   runApp(MyApp(viewModel: viewModel));
 }

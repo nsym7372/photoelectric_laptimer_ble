@@ -4,7 +4,7 @@ import 'package:photoelectric_timer/viewmodel/laptimer_viewmodel.dart';
 class LapTimerView extends StatelessWidget {
   final LapTimerViewModel viewModel;
 
-  LapTimerView({super.key, required this.viewModel});
+  const LapTimerView({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,10 @@ class LapTimerView extends StatelessWidget {
             StreamBuilder<String>(
                 stream: viewModel.laptime,
                 builder: (context, snapshot) {
+                  final size = snapshot.data == null ? 24.0 : 144.0;
                   return Text(
                     snapshot.data ?? "waiting for data...",
-                    style: const TextStyle(fontSize: 144, color: Colors.white),
+                    style: TextStyle(fontSize: size, color: Colors.white),
                   );
                 })
           ],
