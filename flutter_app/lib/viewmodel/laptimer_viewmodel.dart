@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:photoelectric_timer/model/speak_service.dart';
-import 'package:photoelectric_timer/model/websocket_service.dart';
+import 'package:ble_laptimer/model/speak_service.dart';
+import 'package:ble_laptimer/model/websocket_service.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class LapTimerViewModel {

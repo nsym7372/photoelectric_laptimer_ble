@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photoelectric_timer/viewmodel/laptimer_viewmodel.dart';
+import 'package:ble_laptimer/viewmodel/laptimer_viewmodel.dart';
 
 class LapTimerView extends StatelessWidget {
   final LapTimerViewModel viewModel;

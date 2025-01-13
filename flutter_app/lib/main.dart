@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:photoelectric_timer/model/speak_service.dart';
-import 'package:photoelectric_timer/model/websocket_service.dart';
-import 'package:photoelectric_timer/view/laptimer_view.dart';
-import 'package:photoelectric_timer/viewmodel/laptimer_viewmodel.dart';
+import 'package:ble_laptimer/model/speak_service.dart';
+import 'package:ble_laptimer/model/websocket_service.dart';
+import 'package:ble_laptimer/view/laptimer_view.dart';
+import 'package:ble_laptimer/viewmodel/laptimer_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
