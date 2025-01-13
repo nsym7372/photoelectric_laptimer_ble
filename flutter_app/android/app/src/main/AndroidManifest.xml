@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="photoelectric_timer"
+        android:label="ble_laptimer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

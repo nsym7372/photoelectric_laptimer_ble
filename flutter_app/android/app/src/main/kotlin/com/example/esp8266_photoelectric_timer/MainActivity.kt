@@ -1,4 +1,4 @@
-package com.example.esp8266_photoelectric_timer
+package com.example.ble_laptimer
 
 import io.flutter.embedding.android.FlutterActivity
 
