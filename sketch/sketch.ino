@@ -1,65 +1,50 @@
-#include "WiFi.h"
-// #include <ESP8266WiFi.h>
-#include <WebSocketsServer.h>
-#include "config.h" // ssidとpassword
+#include "BluetoothSerial.h"
 
-const int sensorPin = 4;
+const int sensorPin = 4; // センサー接続ピン
 char elapsedTimeStr[10]; // データ送信用の固定バッファ
 
-WebSocketsServer webSocket(81);                  
-unsigned long startTime;
-unsigned long elapsedTime;
+unsigned long startTime = 0; // タイマーの開始時刻
+unsigned long elapsedTime;   // 経過時間
 
 const unsigned long ignoreInterval = 3000; // センサー再検知を無視する時間（ミリ秒）
-unsigned long lastDetectionTime = 0;
-static int previousSensorState = HIGH;
+unsigned long lastDetectionTime = 0;       // 最後にセンサーを検知した時間
+int previousSensorState = HIGH;            // センサーの前回状態
+
+BluetoothSerial SerialBT;
 
 void setup() {
-  Serial.begin(115200);
-  pinMode(sensorPin, INPUT_PULLUP);
+    Serial.begin(115200); // デバッグ用シリアルモニタ
+    pinMode(sensorPin, INPUT_PULLUP);
 
-  initNetWork();
-  webSocket.begin();
-  Serial.println("WebSocket server started");
-
-  startTime = millis();
+    // デバッグとBluetoothの初期化
+    SerialBT.begin("BT_LapTimer"); // Bluetoothのデバイス名
+    Serial.println("Bluetooth Initialized. Ready to pair!");
 }
 
 void loop() {
-  webSocket.loop();
-  int sensorState = digitalRead(sensorPin);
-  if (sensorState == LOW && previousSensorState == HIGH) {
+    int sensorState = digitalRead(sensorPin); // センサーの現在状態を取得
 
-    // センサー検知から一定時間が経過している場合のみ処理を実行
-    if ((millis() - lastDetectionTime) > ignoreInterval) {
-      elapsedTime = millis() - startTime;
-      snprintf(elapsedTimeStr, sizeof(elapsedTimeStr), "%lu", elapsedTime);
-      webSocket.broadcastTXT(elapsedTimeStr);
+    // センサーが変化して LOW になった場合
+    if (sensorState == LOW && previousSensorState == HIGH) {
 
-      // 次の計測のためにタイマーをリセット
-      startTime = millis();
-      lastDetectionTime = millis(); 
+        // センサー検知から一定時間が経過している場合のみ処理を実行
+        if ((millis() - lastDetectionTime) > ignoreInterval) {
+            elapsedTime = millis() - startTime; // 経過時間を計測
+            snprintf(elapsedTimeStr, sizeof(elapsedTimeStr), "%lu", elapsedTime);
+
+            // // デバッグ用ログ
+            // Serial.println("Elapsed Time Detected: " + String(elapsedTimeStr));
+            
+            // Bluetooth送信
+            SerialBT.println(elapsedTimeStr);
+
+            // 次の計測のためにタイマーをリセット
+            startTime = millis();
+            lastDetectionTime = millis(); 
+        }
     }
-  }
-  // センサー状態を更新
-  previousSensorState = sensorState;
-}
 
-void initNetWork(){
-
-  IPAddress local_IP(192, 168, 179, 9);
-  IPAddress gateway(192, 168, 179, 1);
-  IPAddress subnet(255, 255, 255, 0);
-
-  if (!WiFi.config(local_IP, gateway, subnet)) {
-    Serial.println("Failed to configure static IP");
-  }
-
-  WiFi.begin(CONF_SSID, CONF_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-  Serial.println("Connected to WiFi");
+    // センサー状態を更新
+    previousSensorState = sensorState;
 }
 
