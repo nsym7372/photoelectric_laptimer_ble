@@ -1,15 +1,14 @@
+import 'package:ble_laptimer/model/ble_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ble_laptimer/model/speak_service.dart';
-import 'package:ble_laptimer/model/websocket_service.dart';
 import 'package:ble_laptimer/view/laptimer_view.dart';
 import 'package:ble_laptimer/viewmodel/laptimer_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final speakService = await SpeakService.create();
-  final webSocketService = WebSocketService("ws://192.168.179.9:81");
-  final viewModel = LapTimerViewModel(webSocketService, speakService);
-
+  final bleService = BleService();
+  final viewModel = LapTimerViewModel(bleService, speakService);
   runApp(MyApp(viewModel: viewModel));
 }
 
